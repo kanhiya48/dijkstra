@@ -14,9 +14,14 @@ export function minDistance(distances, visited) {
   
     return minIndex;
   }
-  
+  function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+
   // Dijkstra's algorithm function
- export function dijkstra(edges, start) {
+ export async function dijkstra(edges, start,movline,setmovline,elements) {
     const vertices = new Set();
     edges.forEach((edge) => {
       vertices.add(edge.source);
@@ -24,30 +29,63 @@ export function minDistance(distances, visited) {
     
     });
     const numVertices = vertices.size;
-    console.log(numVertices)
-    console.log("bb")
-    console.log(vertices);
-    console.log("bb")
+    console.log("startingindex"+start)
     const vertexMap = new Map([...vertices].map((vertex, index) => [vertex, index]));
     const distances = new Array(numVertices).fill(Infinity);
     const visited = new Array(numVertices).fill(false);
-  
-    distances[vertexMap.get(start)] = 0;
+     
+
+   start=start.charCodeAt(0)-65;
+    distances[start] = 0;
   
     for (let count = 0; count < numVertices - 1; count++) {
       const u = minDistance(distances, visited);
       visited[u] = true;
   
-      const adjacentEdges = edges.filter((edge) => edge.source === [...vertexMap.keys()][u]);
-  
+      const adjacentEdges = edges.filter((edge) => edge.source === String.fromCharCode(u+65));
+   console.log("source  "+u+"    "+String.fromCharCode(u+65))
       for (let v = 0; v < adjacentEdges.length; v++) {
-        const destinationIndex = vertexMap.get(adjacentEdges[v].destination);
+        console.log("inside loop  "+adjacentEdges[v].destination)
+        const destinationIndex = adjacentEdges[v].destination.charCodeAt(0)-65
         if (
           !visited[destinationIndex] &&
           distances[u] !== Infinity &&
           distances[u] + adjacentEdges[v].weight < distances[destinationIndex]
         ) {
+          const removeedges=edges.filter((edge) => edge.destination === String.fromCharCode(destinationIndex+65));
+          var movedummy=movline
+          for (let re=0;re<removeedges.length;re++)
+          {console.log("forcheck"+removeedges[re].idnum)
+          const con=removeedges[re].idnum;
+          console.log("removeedges"+con)
+            const ind=movedummy.findIndex((item)=>{return item.idnum===con});
+            movedummy[ind].st=false;
+          
+             
+          }
+          setmovline([...movedummy])
           distances[destinationIndex] = distances[u] + adjacentEdges[v].weight;
+          // const asciiValuesource = u.charCodeAt(0)-65;
+          //   const asciiValuedest = destinationIndex.charCodeAt(0)-65;
+          console.log("destination index"+destinationIndex)
+          const kl=edges.findIndex((edge)=>{ return edge.source.charCodeAt(0)===u+65 && edge.destination.charCodeAt(0)===destinationIndex+65});
+          const kl1=movline;
+          console.log("klklklkklklklklklklklklklkkllklklklkk"+kl);
+            const angle = Math.atan2((elements[u].y - elements[destinationIndex].y), (elements[u].x - elements[destinationIndex].x)) * (180 / Math.PI);
+            console.log(angle+"  "+u+"  "+v)
+          const f=edges[kl].idnum;
+          const kl2=movline.findIndex((item) => { return item.idnum===f});
+          kl1[kl2].st=true;
+          kl1[kl2].nod=u;
+          if(angle>=0)
+          {
+            kl1[kl2].sty=1;
+          }
+          else{
+            kl1[kl2].sty=-1;
+          }
+          setmovline([...kl1]);
+          await sleep(2000);
         }
       }
     }

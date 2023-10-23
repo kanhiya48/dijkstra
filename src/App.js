@@ -9,7 +9,7 @@ function App() {
   return (
     <div className='no-select'>
   <Maincomponent/>
-  
+  {/* <New1/> */}
     </div>
   );
 }

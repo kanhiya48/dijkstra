@@ -1,3 +1,53 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.border-change {
+  width: 200px;
+  height: 200px;
+  /* border: 10px solid; */
+  background-image: linear-gradient(to right, transparent 50%, black 50%);
+  background-size: 200% 200%;
+  background-position: 100% 100%;
+  transition: background-position 8s;
+}
+
+@keyframes borderAnimation {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+@keyframes borderAnimation1 {
+  0% {
+    background-position: 200% 200%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.animate-border-change {
+  animation: borderAnimation 1s forwards;
+  animation-fill-mode: forwards;
+}
+.animate-border-change1 {
+  animation: borderAnimation1 1s forwards;
+  animation-fill-mode: forwards;
+}
+/* App.css */
+.Toastify__toast--success {
+  background: green;
+  color: white;
+}
+.curso{
+  position:fixed;
+  /* left:10px; */
+  width:25px;
+  height:25px;
+  transform:translate(0%,-100%);
+  background-color : white;
+background-color: transparent;
+  pointer-events:none;
+  transition:width 0s,height 0s;
+z-index: 2;
+
+}
